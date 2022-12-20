@@ -1,0 +1,36 @@
+<div class="container pt-3">
+  <div class="row gx-4">
+    <div class="col-lg-6 col-12">
+      <form class="row">
+        <div class="col-auto align-self-end">
+          <label for="citiesNumber" class="form-label">{{'Number of cities' | translate }}</label>
+        </div>
+        <div class="col-2">
+          <input type="number" [formControl]="citiesNumber" class="form-control" id="citiesNumber">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary"
+                  (click)="generateCities()">{{'Generate' | translate }}</button>
+        </div>
+
+        <div class="col-auto m-auto">
+          <button class="btn btn-primary" (click)="loadAtt48Problem()">
+            {{'LoadATT48Problem' | translate }}
+          </button>
+        </div>
+      </form>
+
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="col-lg-6 col-12 pt-5">
+      <app-algorithm-form [costMatrix]="costMatrix" (runAlgorithmEmitter)="onRunAlgorithm($event)"></app-algorithm-form>
+    </div>
+  </div>
+
+  <div class="mb-5" *ngIf="routeAlgorithmRows.length > 0">
+    <app-route-algorithm-table [routeAlgorithmRows]="routeAlgorithmRows"
+                               (routeOrderClickEmitter)="onRouteOrderClick($event)"></app-route-algorithm-table>
+  </div>
+
+</div>

@@ -1,0 +1,69 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col" (click)="sortTable('algorithmType')">{{'Algorithm' | translate }}</th>
+    <th scope="col" (click)="sortTable('parameters')">{{'Parameters' | translate }}</th>
+    <th scope="col" (click)="sortTable('calculationTime')">{{'Calculation time' | translate }}</th>
+    <th scope="col" (click)="sortTable('totalCost')">{{'Total cost' | translate }}</th>
+    <th scope="col">{{'Order' | translate }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let routeAlgorithmRow of routeAlgorithmRows; index as i">
+    <th scope="row">{{ i + 1 }}</th>
+    <td>{{ routeAlgorithmRow.algorithmType | translate}}</td>
+    <td>{{ routeAlgorithmRow.parametersTranslation | translate:routeAlgorithmRow.parameters }}</td>
+
+    <td>
+      <ng-container *ngIf="routeAlgorithmRow.status === requestStatuses.SUCCESS; else notSuccess">
+        {{ routeAlgorithmRow.calculationTime * 1000 | date:'s.SSS'}}
+      </ng-container>
+      <ng-template #notSuccess>
+        <ng-container *ngIf="routeAlgorithmRow.status === requestStatuses.ONGOING; else failure">
+          <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </ng-container>
+      </ng-template>
+      <ng-template #failure>
+        <i class="bi bi-x-lg"></i>
+      </ng-template>
+    </td>
+
+    <td>
+      <ng-container *ngIf="routeAlgorithmRow.status === requestStatuses.SUCCESS; else notSuccess">
+        {{ routeAlgorithmRow.totalCost | number}}
+      </ng-container>
+      <ng-template #notSuccess>
+        <ng-container *ngIf="routeAlgorithmRow.status === requestStatuses.ONGOING; else failure">
+          <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </ng-container>
+      </ng-template>
+      <ng-template #failure>
+        <i class="bi bi-x-lg"></i>
+      </ng-template>
+    </td>
+
+    <td>
+      <ng-container *ngIf="routeAlgorithmRow.status === requestStatuses.SUCCESS; else notSuccess">
+        <a href="" (click)="$event.preventDefault();onRouteOrderClick(routeAlgorithmRow.citiesOrder)">
+          {{'Order' | translate }}
+        </a>
+      </ng-container>
+      <ng-template #notSuccess>
+        <ng-container *ngIf="routeAlgorithmRow.status === requestStatuses.ONGOING; else failure">
+          <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </ng-container>
+      </ng-template>
+      <ng-template #failure>
+        <i class="bi bi-x-lg"></i>
+      </ng-template>
+    </td>
+  </tr>
+  </tbody>
+</table>
